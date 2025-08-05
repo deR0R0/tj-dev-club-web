@@ -24,7 +24,7 @@ const officers = [
   {
     name: 'Sroshsafa Shirzay',
     role: 'Standalone Apps Lead',
-    imageUrl: 'https://avatars.githubusercontent.com/u/1024025',
+    imageUrl: 'officers/srosh.jpg',
     githubUrl: 'https://github.com/sroshc',
   },
   {
