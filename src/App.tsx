@@ -6,19 +6,19 @@ const officers = [
   {
     name: 'Eric Guo',
     role: 'Team Lead',
-    imageUrl: '/officers/eric.jpg',
+    imageUrl: 'officers/eric.jpg',
     githubUrl: 'https://github.com/BaconErie',
   },
   {
     name: 'Aarush Chaurasis',
     role: 'Frontend Lead',
-    imageUrl: '/officers/aarush.jpg',
+    imageUrl: 'officers/aarush.jpg',
     githubUrl: 'https://github.com/aarushtools',
   },
   {
     name: 'Bryce Conrad',
     role: 'Backend Lead',
-    imageUrl: '/officers/bryce.jpg',
+    imageUrl: 'officers/bryce.jpg',
     githubUrl: 'https://github.com/' + 'makors',
   },
   {
@@ -30,7 +30,7 @@ const officers = [
   {
     name: 'Hridhaan Banerjee',
     role: 'Treasurer and Event Coordinator',
-    imageUrl: '/officers/hridhaan.jpg',
+    imageUrl: 'officers/hridhaan.jpg',
     githubUrl: 'https://github.com/HridhaanB',
   },
   {
@@ -47,7 +47,7 @@ function App() {
       <header className="z-50 bg-white/5 backdrop-blur-xl border-b border-white/10 shadow-lg">
         <div className="max-w-screen-xl mx-auto flex items-center justify-between px-6 py-4">
           <div className="flex items-center">
-            <img src="/logo.svg" alt="logo" className="h-12 w-auto transition-transform hover:scale-105" />
+            <img src="logo.svg" alt="logo" className="h-12 w-auto transition-transform hover:scale-105" />
             <h1 className="text-2xl font-bold pl-2">TJHSST Dev Club</h1>
           </div>
           <nav className="hidden md:flex items-center space-x-8">
@@ -280,7 +280,7 @@ function App() {
           <div className="xl:grid xl:grid-cols-3 xl:gap-8">
             <div className="space-y-4">
               <div className="flex items-center">
-                <img src="/logo.svg" alt="TJHSST Dev Club" className="h-10 w-auto" />
+                <img src="logo.svg" alt="TJHSST Dev Club" className="h-10 w-auto" />
                 <span className="ml-3 text-xl font-semibold text-white">TJHSST Dev Club</span>
               </div>
               <p className="text-sm text-gray-400">
