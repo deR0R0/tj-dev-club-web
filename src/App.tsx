@@ -515,7 +515,7 @@ function App() {
                   <h3 className="text-base font-semibold leading-6 text-white">Resources</h3>
                   <ul role="list" className="mt-3 space-y-2">
                     <li>
-                      <a href="https://github.com/tjdevclub" target="_blank" rel="noopener noreferrer" className="text-sm leading-6 text-gray-300 hover:text-white">
+                      <a href="https://github.com/TJHSST-Dev-Club" target="_blank" rel="noopener noreferrer" className="text-sm leading-6 text-gray-300 hover:text-white">
                         GitHub
                       </a>
                     </li>
