@@ -1,6 +1,8 @@
-import { Github, GraduationCap, Hammer, Trophy, Users } from 'lucide-react';
+import { Github, UserCheck, Code2, MessageSquare, Calendar, ExternalLink, FileText } from 'lucide-react';
+import { useEffect, useState } from 'react'
 import './App.css'
 import confetti from 'canvas-confetti'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 
 const officers = [
   {
@@ -41,7 +43,40 @@ const officers = [
   },
 ]
 
+type Lecture = {
+  date: string
+  title: string
+  description?: string
+  links: { label: string; href: string; kind?: 'slides' | 'code' | 'signup' | 'other' }[]
+}
+
 function App() {
+  const [fetchedLectures, setFetchedLectures] = useState<null | { upcoming: Lecture[]; previous: Lecture[] }>(null)
+
+  // still static
+  useEffect(() => {
+    let cancelled = false
+    const load = async () => {
+      try {
+        const res = await fetch('/lectures.json', { headers: { 'Accept': 'application/json' } })
+        if (!res.ok) return
+        const data = await res.json()
+        if (!cancelled && data && (Array.isArray(data.upcoming) || Array.isArray(data.previous))) {
+          setFetchedLectures({
+            upcoming: Array.isArray(data.upcoming) ? data.upcoming : [],
+            previous: Array.isArray(data.previous) ? data.previous : [],
+          })
+        }
+      } catch (_) {
+        // ignore and keep placeholders
+      }
+    }
+    load()
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
   return (
     <div className="min-h-screen bg-gray-800 text-white font-['Inter']" id="root">
       <header className="z-50 bg-white/5 backdrop-blur-xl border-b border-white/10 shadow-lg">
@@ -52,17 +87,10 @@ function App() {
           </div>
           <nav className="hidden md:flex items-center space-x-8">
             <a
-              href="#about"
+              href="#faq"
               className="relative text-white/80 hover:text-white transition-colors duration-200 font-medium group"
             >
-              About
-              <span className="absolute bottom-0 left-0 w-0 h-px bg-white/60 group-hover:w-full transition-all duration-200 ease-out"></span>
-            </a>
-            <a
-              href="#officers"
-              className="relative text-white/80 hover:text-white transition-colors duration-200 font-medium group"
-            >
-              Officers
+              FAQ
               <span className="absolute bottom-0 left-0 w-0 h-px bg-white/60 group-hover:w-full transition-all duration-200 ease-out"></span>
             </a>
             <a
@@ -94,7 +122,7 @@ function App() {
       </header>
       <main>
         {/* hero content */}
-        <div className="flex items-center h-[80vh] max-w-screen-xl mx-auto px-8 gap-x-12 mb-12 md:mb-0">
+        <div className="flex items-center min-h-[calc(100svh-80px)] max-w-screen-xl mx-auto px-8 gap-x-12 mb-0">
           <div className="flex-1">
             <div className="space-y-4 md:space-y-6">
               <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
@@ -189,53 +217,141 @@ function App() {
         <div id="about" className="py-12 md:py-24">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl lg:text-center">
-              <h2 className="text-base font-semibold leading-7 text-blue-400">About Our Club</h2>
+              <h2 className="text-base font-semibold leading-7 text-blue-400">What We Do</h2>
               <p className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">
-                Learn, build, and connect
+                Mentoring, Projects, Community
               </p>
               <p className="mt-6 text-lg leading-8 text-gray-300">
-                We're a web development club at TJ that meets Wednesdays 8B to learn and build together. Whether you're a beginner or experienced developer, our supportive community will help you grow your skills.
+                TJ Dev Club meets Wednesdays 8B. Developers of all skill levels are welcome to learn, build, and plug into a supportive developer community.
               </p>
             </div>
-            <div className="mx-auto mt-12 max-w-2xl lg:max-w-4xl">
-              <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
-                <div className="relative pl-16">
-                  <dt className="text-base font-semibold leading-7 text-white">
-                    <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500">
-                      <GraduationCap className="h-6 w-6 text-white" />
+            <div className="mx-auto mt-12 max-w-2xl">
+              <ol className="space-y-8">
+                <li className="relative flex gap-4">
+                  <div className="shrink-0">
+                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-white/10 ring-1 ring-white/15">
+                      <UserCheck className="h-4 w-4 text-blue-300" />
+                    </span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-white">Mentoring</h3>
+                    <p className="mt-1 text-base leading-7 text-gray-400">Collaborate with fellow students and club officers through small groups, guided tutorials, and lectures from experts. Mentor others to help them succeed and earn service hours.</p>
+                  </div>
+                </li>
+                <li className="relative flex gap-4">
+                  <div className="shrink-0">
+                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-white/10 ring-1 ring-white/15">
+                      <Code2 className="h-4 w-4 text-blue-300" />
+                    </span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-white">Projects</h3>
+                    <p className="mt-1 text-base leading-7 text-gray-400">Build for competitions or for yourself. Ship at least one project this year. We'll help you win HackTJ.</p>
+                  </div>
+                </li>
+                <li className="relative flex gap-4">
+                  <div className="shrink-0">
+                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-white/10 ring-1 ring-white/15">
+                      <MessageSquare className="h-4 w-4 text-blue-300" />
+                    </span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-white">Community</h3>
+                    <p className="mt-1 text-base leading-7 text-gray-400">Share your work at frequent competitions, make friends, and stay connected on Discord. Our strong community is like no other.</p>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        {/* lectures content */}
+        <div id="lectures" className="py-12 md:py-24">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="mx-auto max-w-2xl lg:text-center">
+              <h2 className="text-base font-semibold leading-7 text-blue-400">Lectures</h2>
+              <p className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">Upcoming & Previous</p>
+              <p className="mt-6 text-lg leading-8 text-gray-300">
+                See what's coming up and catch up on recent sessions.
+              </p>
+            </div>
+            <div className="mx-auto mt-12 max-w-6xl">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* Upcoming lectures */}
+                {fetchedLectures?.upcoming.map((lecture) => (
+                  <div
+                    key={`upcoming-${lecture.date}-${lecture.title}`}
+                    className="rounded-xl bg-white/10 backdrop-blur-xl border border-white/15 p-5 shadow-lg transition-all hover:bg-white/15 hover:shadow-xl hover:-translate-y-0.5 relative"
+                  >
+                    <div className="absolute top-3 right-3">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-green-500/20 border border-green-400/30 px-2 py-0.5 text-xs text-green-300 font-medium">
+                        <Calendar className="h-3 w-3" />
+                        Upcoming
+                      </span>
                     </div>
-                    Learn from peers
-                  </dt>
-                  <dd className="mt-2 text-base leading-7 text-gray-400">Master modern web technologies like React, Node.js, and TypeScript. We cover everything from the fundamentals of web development to advanced topics.</dd>
-                </div>
-                <div className="relative pl-16">
-                  <dt className="text-base font-semibold leading-7 text-white">
-                    <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500">
-                      <Hammer className="h-6 w-6 text-white" />
+                    <div className="inline-flex items-center gap-1 rounded-full bg-white/10 border border-white/15 px-2 py-0.5 text-xs text-white/70">
+                      {lecture.date}
                     </div>
-                    Build impressive projects
-                  </dt>
-                  <dd className="mt-2 text-base leading-7 text-gray-400">Apply your skills to create real-world applications. Participate in hackathons, contribute to open-source, and build a portfolio that stands out.</dd>
-                </div>
-                <div className="relative pl-16">
-                  <dt className="text-base font-semibold leading-7 text-white">
-                    <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500">
-                      <Trophy className="h-6 w-6 text-white" />
+                    <div className="mt-2 text-base md:text-lg font-semibold text-white pr-20">{lecture.title}</div>
+                    {lecture.description ? (
+                      <p className="mt-1 text-sm text-white/70">{lecture.description}</p>
+                    ) : null}
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {lecture.links.map((link) => (
+                        <a
+                          key={link.label}
+                          href={link.href}
+                          target={link.href.startsWith('http') ? '_blank' : undefined}
+                          rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                          className="inline-flex items-center gap-1.5 rounded-md bg-white/10 border border-white/15 px-2.5 py-1.5 text-sm text-white/90 hover:bg-white/20"
+                        >
+                          {link.kind === 'slides' ? <FileText className="h-4 w-4" /> : null}
+                          {link.kind === 'code' ? <Github className="h-4 w-4" /> : null}
+                          {link.kind !== 'slides' && link.kind !== 'code' ? <ExternalLink className="h-4 w-4" /> : null}
+                          {link.label}
+                        </a>
+                      ))}
                     </div>
-                    Friendly Competitions
-                  </dt>
-                  <dd className="mt-2 text-base leading-7 text-gray-400">We regularly host fun competitions like Kahoots and design contests where you can test your skills and win prizes.</dd>
-                </div>
-                <div className="relative pl-16">
-                  <dt className="text-base font-semibold leading-7 text-white">
-                    <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500">
-                      <Users className="h-6 w-6 text-white" />
+                  </div>
+                ))}
+                {/* Previous lectures */}
+                {fetchedLectures?.previous.map((lecture) => (
+                  <div
+                    key={`previous-${lecture.date}-${lecture.title}`}
+                    className="rounded-xl bg-white/10 backdrop-blur-xl border border-white/15 p-5 shadow-lg transition-all hover:bg-white/15 hover:shadow-xl hover:-translate-y-0.5 relative"
+                  >
+                    <div className="absolute top-3 right-3">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-gray-500/20 border border-gray-400/30 px-2 py-0.5 text-xs text-gray-300 font-medium">
+                        <Calendar className="h-3 w-3" />
+                        Previous
+                      </span>
                     </div>
-                    Vibrant Community
-                  </dt>
-                  <dd className="mt-2 text-base leading-7 text-gray-400">Join a vibrant network of student developers. Collaborate on projects, share your knowledge, and grow together with peers who share your passion.</dd>
-                </div>
-              </dl>
+                    <div className="inline-flex items-center gap-1 rounded-full bg-white/10 border border-white/15 px-2 py-0.5 text-xs text-white/70">
+                      {lecture.date}
+                    </div>
+                    <div className="mt-2 text-base md:text-lg font-semibold text-white pr-20">{lecture.title}</div>
+                    {lecture.description ? (
+                      <p className="mt-1 text-sm text-white/70">{lecture.description}</p>
+                    ) : null}
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {lecture.links.map((link) => (
+                        <a
+                          key={link.label}
+                          href={link.href}
+                          target={link.href.startsWith('http') ? '_blank' : undefined}
+                          rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                          className="inline-flex items-center gap-1.5 rounded-md bg-white/10 border border-white/15 px-2.5 py-1.5 text-sm text-white/90 hover:bg-white/20"
+                        >
+                          {link.kind === 'slides' ? <FileText className="h-4 w-4" /> : null}
+                          {link.kind === 'code' ? <Github className="h-4 w-4" /> : null}
+                          {link.kind !== 'slides' && link.kind !== 'code' ? <ExternalLink className="h-4 w-4" /> : null}
+                          {link.label}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -274,6 +390,70 @@ function App() {
             </ul>
           </div>
         </div>
+        {/* FAQ content */}
+        <div id="faq" className="py-12 md:py-24">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="mx-auto max-w-2xl lg:text-center">
+              <h2 className="text-base font-semibold leading-7 text-blue-400">FAQ</h2>
+              <p className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">Frequently Asked Questions</p>
+              <p className="mt-6 text-lg leading-8 text-gray-300">
+                Everything you need to know about TJ Dev Club.
+              </p>
+            </div>
+            <div className="mx-auto mt-12 max-w-2xl lg:max-w-3xl">
+              <Accordion type="single" collapsible className="divide-y divide-white/10">
+                <AccordionItem value="item-1" className="border-white/10">
+                  <AccordionTrigger className="text-white">
+                    When and where does the club meet?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-300">
+                    We meet on Wednesdays during 8B. Be sure to check Ion for the latest 8th period information.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-2" className="border-white/10">
+                  <AccordionTrigger className="text-white">
+                    Do I need prior experience to join?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-300">
+                    Not at all! We welcome beginners and experienced developers alike with lectures, projects, and competitions for all levels.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-3" className="border-white/10">
+                  <AccordionTrigger className="text-white">
+                    I know basically everything about web development. Can I still join?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-300">
+                    Absolutely! We offer a mentorship program for experienced developers to help other club members succeed, with the possibility of service hours in the future.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-4" className="border-white/10">
+                  <AccordionTrigger className="text-white">
+                    What technologies will I learn?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-300">
+                    We start with the fundamentals: HTML, CSS, and JavaScript for beginners. Advanced members can dive into React, TypeScript, Node.js, APIs, deployment, UI/UX, and more. We also host mini-competitions with prizes that aren't just food.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-5" className="border-white/10">
+                  <AccordionTrigger className="text-white">
+                    How can I get updates and additional resources?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-300">
+                    Join our Discord, follow the GitHub organization, and check the website. We post slides, code, and announcements there.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-6" className="border-white/10">
+                  <AccordionTrigger className="text-white">
+                    How do I sign up for sessions?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-300">
+                    Use Ion to sign up for our Wednesday 8B sessions. You can also use the “Sign up” buttons on this page for quick access.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </div>
+          </div>
+        </div>
       </main>
       <footer className="bg-gray-900/40 border-t border-white/10">
         <div className="max-w-screen-xl mx-auto px-6 py-8 lg:px-8">
@@ -298,8 +478,18 @@ function App() {
                       </a>
                     </li>
                     <li>
+                      <a href="#lectures" className="text-sm leading-6 text-gray-300 hover:text-white">
+                        Lectures
+                      </a>
+                    </li>
+                    <li>
                       <a href="#officers" className="text-sm leading-6 text-gray-300 hover:text-white">
                         Officers
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#faq" className="text-sm leading-6 text-gray-300 hover:text-white">
+                        FAQ
                       </a>
                     </li>
                   </ul>

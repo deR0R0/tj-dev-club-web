@@ -1,0 +1,3 @@
+name = "dev-club-website"
+compatibility_date = "2025-04-03"
+main = "./src/index.ts"
