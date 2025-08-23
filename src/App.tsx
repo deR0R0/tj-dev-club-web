@@ -94,7 +94,7 @@ function App() {
               <span className="absolute bottom-0 left-0 w-0 h-px bg-white/60 group-hover:w-full transition-all duration-200 ease-out"></span>
             </a>
             <a
-              href="https://discord.gg/j4A8pDje"
+              href="https://discord.gg/sP3WVQRQPC"
               target="_blank"
               rel="noopener noreferrer"
               className="relative text-white/80 hover:text-white transition-colors duration-200 font-medium group flex items-center gap-1"
@@ -184,7 +184,7 @@ function App() {
                 <div className="text-white/80 mb-1 hidden" id="welcome-message">
                   <div className="font-semibold">Welcome to Dev Club! 🎉</div>
                   <div>
-                    - <a href="https://discord.gg/j4A8pDje" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">Join the Discord!</a>
+                    - <a href="https://discord.gg/sP3WVQRQPC" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">Join the Discord!</a>
                   </div>
                   <div>
                     - <a href="https://ion.tjhsst.edu/eighth/activity/12" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">Sign up on Wednesday 8B!</a>
@@ -503,7 +503,7 @@ function App() {
                       </a>
                     </li>
                     <li>
-                      <a href="https://discord.gg/j4A8pDje" target="_blank" rel="noopener noreferrer" className="text-sm leading-6 text-gray-300 hover:text-white">
+                      <a href="https://discord.gg/sP3WVQRQPC" target="_blank" rel="noopener noreferrer" className="text-sm leading-6 text-gray-300 hover:text-white">
                         Discord
                       </a>
                     </li>
