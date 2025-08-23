@@ -1,0 +1,8 @@
+{
+    "date": "Wed, Sep 10 & Wed, Sep 17",
+    "title": "Kickoff + Club Overview",
+    "description": "Hello World! Welcome to Dev Club. We'll go over the club, the website, and the basics of web development.",
+    "links": [
+      { "label": "Sign up", "href": "https://ion.tjhsst.edu/eighth/activity/12", "kind": "signup" }
+    ]
+}

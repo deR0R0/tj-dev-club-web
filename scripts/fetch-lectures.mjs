@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
-const GITHUB_API_FETCH_URL = 'https://api.github.com/repos/TJHSST-Dev-Club/lectures/contents/lectures'
+const GITHUB_API_FETCH_URL = 'https://api.github.com/repos/TJHSST-Dev-Club/website/contents/lectures'
 
 async function ensureDir(dir) {
   await fs.mkdir(dir, { recursive: true })
