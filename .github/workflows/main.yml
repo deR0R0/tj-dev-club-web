@@ -1,4 +1,4 @@
-name: Build Vite App
+name: Build Vite App (Bun)
 
 on:
   push:
@@ -7,21 +7,27 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: 20
+          bun-version: latest
 
-      - run: npm ci
-      - run: npm run build
+      - name: Install deps
+        run: bun install --frozen-lockfile
+
+      - name: Build with Vite
+        run: bun run build
 
       - name: Commit dist folder
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
+          git fetch origin
+          git checkout -B build-artifacts
           git add -f dist
           git commit -m "Build artifacts"
-          git push origin HEAD:build-artifacts
+          git push origin build-artifacts --force
