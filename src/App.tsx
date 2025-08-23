@@ -507,6 +507,11 @@ function App() {
                         Discord
                       </a>
                     </li>
+                    <li>
+                      <a href="mailto:hello@tjdev.club" className="text-sm leading-6 text-gray-300 hover:text-white">
+                        Email: hello@tjdev.club
+                      </a>
+                    </li>
                   </ul>
                 </div>
               </div>
