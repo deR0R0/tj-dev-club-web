@@ -1,3 +1,4 @@
+import { FILE } from 'node:dns'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
@@ -24,7 +25,8 @@ async function main() {
     };
     for (const file of fetchedData) {
         const fileText = await fetchJson(file.url);
-        const lecture = JSON.parse(Buffer.from(fileText.content, 'base64').toString('utf-8'));
+        let lecture = JSON.parse(Buffer.from(fileText.content, 'base64').toString('utf-8'));
+        lecture.filename = file.name;
         lectures[lecture.date < new Date().toISOString().split('T')[0] ? 'previous' : 'upcoming'].push(lecture);
     }
 

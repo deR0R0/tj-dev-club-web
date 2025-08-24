@@ -44,6 +44,7 @@ const officers = [
 ]
 
 type Lecture = {
+  filename: string;
   date: string
   title: string
   description?: string
@@ -63,7 +64,14 @@ function App() {
         const data = await res.json()
         if (!cancelled && data && (Array.isArray(data.upcoming) || Array.isArray(data.previous))) {
           setFetchedLectures({
-            upcoming: Array.isArray(data.upcoming) ? data.upcoming : [],
+            upcoming: Array.isArray(data.upcoming) ? data.upcoming.sort((a: Lecture, b: Lecture) => {
+              // Extract the M-D part
+              const [monthA, dayA] = a.filename.match(/^(\d+)-(\d+)-/)?.slice(1, 3).map(Number) || [];
+              const [monthB, dayB] = b.filename.match(/^(\d+)-(\d+)-/)?.slice(1, 3).map(Number) || [];
+
+              // Convert to a comparable number (or Date)
+              return new Date(2000, monthA - 1, dayA).getTime() - new Date(2000, monthB - 1, dayB).getTime();
+            }) : [],
             previous: Array.isArray(data.previous) ? data.previous : [],
           })
         }
