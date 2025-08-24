@@ -1,0 +1,8 @@
+{
+    "date": "Wed, Sep 24",
+    "title": "Intro to HTML",
+    "description": "Learn how to structure webpages using Hypertext Markup Language (HTML), a fundamental language of the web.",
+    "links": [
+      { "label": "Sign up", "href": "https://ion.tjhsst.edu/eighth/signup/4566?activity=12", "kind": "signup" }
+    ]
+}
