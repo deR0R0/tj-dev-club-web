@@ -3,6 +3,16 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import confetti from 'canvas-confetti'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import Prism from 'prismjs';
+import 'prismjs/themes/prism-tomorrow.css';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/components/prism-typescript';
+import 'prismjs/components/prism-python';
+import 'prismjs/components/prism-java';
+import 'prismjs/components/prism-cpp';
+import 'prismjs/components/prism-go';
+import 'prismjs/components/prism-rust';
+import 'prismjs/components/prism-bash';
 
 const officers = [
   {
@@ -53,6 +63,11 @@ type Lecture = {
 
 function App() {
   const [fetchedLectures, setFetchedLectures] = useState<null | { upcoming: Lecture[]; previous: Lecture[] }>(null)
+  
+  // Highlight code when component mounts or currentExample changes
+  useEffect(() => {
+    Prism.highlightAll();
+  }, [currentExample]);
   const languageExamples = [
     {
       id: 'js',
@@ -166,7 +181,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-800 text-white font-['Inter']" id="root">
       <header className="z-50 bg-white/5 backdrop-blur-xl border-b border-white/10 shadow-lg">
-        <div className="max-w-screen-xl mx-auto flex items-center justify-between px-6 py-4">
+        <div className="max-w-screen-xl mx-auto flex items-center justify-between px-6 py-4 xl:px-16">
           <div className="flex items-center">
             <img src="logo.svg" alt="logo" className="h-12 w-auto transition-transform hover:scale-105" />
             <h1 className="text-2xl font-bold pl-2">TJHSST Dev Club</h1>
@@ -208,7 +223,7 @@ function App() {
       </header>
       <main>
         {/* hero content */}
-        <div className="flex items-center min-h-[calc(100svh-80px)] max-w-screen-xl mx-auto px-8 gap-x-12 mb-0">
+        <div className="flex items-center min-h-[calc(100svh-80px)] max-w-screen-xl mx-auto px-8 xl:px-16 gap-x-12 mb-0">
           <div className="flex-1">
             <div className="space-y-4 md:space-y-6">
               <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
@@ -256,7 +271,9 @@ function App() {
               </div>
 
               <div className="p-4 font-mono text-sm">
-                <pre className="text-white/80 whitespace-pre leading-6">{currentExample.code}</pre>
+                <pre className="text-white/80 whitespace-pre leading-6">
+                  <code className={`language-${currentExample.id}`}>{currentExample.code}</code>
+                </pre>
               </div>
 
               {/* interactive console, which really should only be available on computer */}
@@ -291,7 +308,7 @@ function App() {
         </div>
         {/* about content */}
         <div id="about" className="py-12 md:py-24">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8 xl:px-16">
             <div className="mx-auto max-w-2xl lg:text-center">
               <h2 className="text-base font-semibold leading-7 text-blue-400">What We Do</h2>
               <p className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">
@@ -343,7 +360,7 @@ function App() {
 
         {/* lectures content */}
         <div id="lectures" className="py-12 md:py-24">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8 xl:px-16">
             <div className="mx-auto max-w-2xl lg:text-center">
               <h2 className="text-base font-semibold leading-7 text-blue-400">Lectures</h2>
               <p className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">Upcoming & Previous</p>
@@ -433,7 +450,7 @@ function App() {
         </div>
         {/* officers content */}
         <div id="officers" className="py-12 md:py-24">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8 xl:px-16">
             <div className="mx-auto max-w-2xl lg:text-center">
               <h2 className="text-base font-semibold leading-7 text-blue-400">Our Team</h2>
               <p className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">Meet The Officers</p>
@@ -468,7 +485,7 @@ function App() {
         </div>
         {/* FAQ content */}
         <div id="faq" className="py-12 md:py-24">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8 xl:px-16">
             <div className="mx-auto max-w-2xl lg:text-center">
               <h2 className="text-base font-semibold leading-7 text-blue-400">FAQ</h2>
               <p className="mt-2 text-4xl font-bold tracking-tight text-white sm:text-5xl">Frequently Asked Questions</p>
@@ -532,7 +549,7 @@ function App() {
         </div>
       </main>
       <footer className="bg-gray-900/40 border-t border-white/10">
-        <div className="max-w-screen-xl mx-auto px-6 py-8 lg:px-8">
+        <div className="max-w-screen-xl mx-auto px-6 py-8 lg:px-8 xl:px-16">
           <div className="xl:grid xl:grid-cols-3 xl:gap-8">
             <div className="space-y-4">
               <div className="flex items-center">
