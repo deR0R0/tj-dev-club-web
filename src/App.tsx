@@ -239,7 +239,7 @@ function App() {
       </header>
       <main>
         {/* hero content */}
-        <div className="flex items-center min-h-[calc(100svh-80px)] max-w-screen-xl mx-auto px-24 xl:px-16 gap-x-12 mb-0">
+        <div className="flex items-center min-h-[calc(100svh-80px)] max-w-screen-xl mx-auto px-8 lg:px-24 xl:px-16 gap-x-12 mb-0">
           <div className="flex-1">
             <div className="space-y-4 md:space-y-6">
               <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
