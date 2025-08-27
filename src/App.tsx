@@ -5,10 +5,13 @@ import confetti from 'canvas-confetti'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import Prism from 'prismjs';
 import 'prismjs/themes/prism-tomorrow.css';
+// Import base languages first, then languages that depend on them
+import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-typescript';
 import 'prismjs/components/prism-python';
 import 'prismjs/components/prism-java';
+import 'prismjs/components/prism-c';
 import 'prismjs/components/prism-cpp';
 import 'prismjs/components/prism-go';
 import 'prismjs/components/prism-rust';
@@ -64,27 +67,23 @@ type Lecture = {
 function App() {
   const [fetchedLectures, setFetchedLectures] = useState<null | { upcoming: Lecture[]; previous: Lecture[] }>(null)
   
-  // Highlight code when component mounts or currentExample changes
-  useEffect(() => {
-    Prism.highlightAll();
-  }, [currentExample]);
   const languageExamples = [
     {
-      id: 'js',
+      id: 'javascript',
       label: 'JavaScript',
       fileName: 'welcome.js',
       run: '$ node welcome.js',
       code: `function joinDevClub() {\n  console.log(welcomeMessage);\n  surprise();\n}`,
     },
     {
-      id: 'ts',
+      id: 'typescript',
       label: 'TypeScript',
       fileName: 'welcome.ts',
       run: '$ ts-node welcome.ts',
       code: `function joinDevClub(): void {\n  console.log(welcomeMessage);\n  surprise();\n}`,
     },
     {
-      id: 'py',
+      id: 'python',
       label: 'Python',
       fileName: 'welcome.py',
       run: '$ python welcome.py',
@@ -112,14 +111,14 @@ function App() {
       code: `func joinDevClub() {\n  fmt.Println(welcomeMessage)\n  surprise()\n}`,
     },
     {
-      id: 'rs',
+      id: 'rust',
       label: 'Rust',
       fileName: 'welcome.rs',
       run: '$ cargo run',
       code: `fn join_dev_club() {\n  println!("{}", welcome_message);\n  surprise();\n}`,
     },
     {
-      id: 'sh',
+      id: 'bash',
       label: 'Bash',
       fileName: 'welcome.sh',
       run: '$ bash welcome.sh',
@@ -169,6 +168,23 @@ function App() {
 
   const currentExample = languageExamples[currentLangIndex]
 
+  const getHighlightedCode = (code: string, language: string) => {
+    try {
+      // Check if the language is available
+      if (!Prism.languages[language]) {
+        console.warn(`Language '${language}' not found in Prism.languages. Available languages:`, Object.keys(Prism.languages));
+        // Use a basic text highlighting with no syntax
+        return code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
+      
+      return Prism.highlight(code, Prism.languages[language], language);
+    } catch (error) {
+      console.warn(`Failed to highlight code for language: ${language}`, error);
+      // Return escaped HTML as fallback
+      return code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+  };
+
   const handleRun = () => {
     confetti({
       particleCount: 150,
@@ -181,7 +197,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-800 text-white font-['Inter']" id="root">
       <header className="z-50 bg-white/5 backdrop-blur-xl border-b border-white/10 shadow-lg">
-        <div className="max-w-screen-xl mx-auto flex items-center justify-between px-6 py-4 xl:px-16">
+        <div className="max-w-screen-xl mx-auto flex items-center justify-between py-4 px-8 xl:px-16">
           <div className="flex items-center">
             <img src="logo.svg" alt="logo" className="h-12 w-auto transition-transform hover:scale-105" />
             <h1 className="text-2xl font-bold pl-2">TJHSST Dev Club</h1>
@@ -223,7 +239,7 @@ function App() {
       </header>
       <main>
         {/* hero content */}
-        <div className="flex items-center min-h-[calc(100svh-80px)] max-w-screen-xl mx-auto px-8 xl:px-16 gap-x-12 mb-0">
+        <div className="flex items-center min-h-[calc(100svh-80px)] max-w-screen-xl mx-auto px-24 xl:px-16 gap-x-12 mb-0">
           <div className="flex-1">
             <div className="space-y-4 md:space-y-6">
               <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
@@ -272,7 +288,12 @@ function App() {
 
               <div className="p-4 font-mono text-sm">
                 <pre className="text-white/80 whitespace-pre leading-6">
-                  <code className={`language-${currentExample.id}`}>{currentExample.code}</code>
+                  <code 
+                    className={`language-${currentExample.id}`}
+                    dangerouslySetInnerHTML={{
+                      __html: getHighlightedCode(currentExample.code, currentExample.id)
+                    }}
+                  />
                 </pre>
               </div>
 
